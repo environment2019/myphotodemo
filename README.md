@@ -47,11 +47,12 @@ name, creation time and custom image name, if any.<br>
 In the method of onActivityResult() we add a new record of photo and save it in the album object. The album object will 
 then be serialized and saved as a Shared Preferences item. 
 ```Java
-    private void addToPhotoAlbum(String originalPhotoPath, String thumbnailPath, String dateTime, String CustomImageName) {
+    private void addToPhotoAlbum(String originalPhotoPath, String thumbnailPath, String dateTime,
+                                 String customImageName) {
         // Read the album object from Shared Preferences
         List<PhotoRecord> listPhoto = SPPhotoAlbum.read(MainActivity.this);
         // Add a new record to the album, and save it back to Shared Preferences
-        PhotoRecord photoRecord = new PhotoRecord(originalPhotoPath, thumbnailPath, dateTime, CustomImageName);
+        PhotoRecord photoRecord = new PhotoRecord(originalPhotoPath, thumbnailPath, dateTime, customImageName);
         listPhoto.add(photoRecord);
         SPPhotoAlbum.save(MainActivity.this, listPhoto);
     }
@@ -110,7 +111,7 @@ on screen by means of a recycler view with a PhotoRecyclerViewAdapter.
 
 ### PhotoActivity
 When we click on a certain item in photo list page, the PhotoActivity will be started with an extra parameter 
-intent_extra_key_photo_path, which represents the real path of the original photo. PhotoActivity just show this photo via a 
+intent_extra_key_photo_path, which represents the real path of the original photo. PhotoActivity just show this photo via an 
 ImageView in the page. Clicking on system back button we will go back to PhotoListActivity.
 
 ### Persistence 
