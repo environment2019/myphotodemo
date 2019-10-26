@@ -126,11 +126,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void addToPhotoAlbum(String originalPhotoPath, String thumbnailPath, String dateTime, String CustomImageName) {
+    private void addToPhotoAlbum(String originalPhotoPath, String thumbnailPath, String dateTime,
+                                 String customImageName) {
         // Read the album object from Shared Preferences
         List<PhotoRecord> listPhoto = SPPhotoAlbum.read(MainActivity.this);
         // Add a new record to the album, and save it back to Shared Preferences
-        PhotoRecord photoRecord = new PhotoRecord(originalPhotoPath, thumbnailPath, dateTime, CustomImageName);
+        PhotoRecord photoRecord = new PhotoRecord(originalPhotoPath, thumbnailPath, dateTime, customImageName);
         listPhoto.add(photoRecord);
         SPPhotoAlbum.save(MainActivity.this, listPhoto);
     }
