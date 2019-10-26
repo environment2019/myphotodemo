@@ -23,7 +23,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -114,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
             ops = new FileOutputStream(thumbnailPath);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 10, ops);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 2, ops);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } finally {
@@ -128,25 +127,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addToPhotoAlbum(String originalPhotoPath, String thumbnailPath, String dateTime, String CustomImageName) {
-        List<PhotoRecord> listPhoto = new ArrayList<>();
         // Read the album object from Shared Preferences
-        try {
-            String serializedObj = SPPhotoAlbum.readObject(MainActivity.this);
-            if (serializedObj != null) {
-                listPhoto = (List<PhotoRecord>) SPPhotoAlbum.deSerialization(serializedObj);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        List<PhotoRecord> listPhoto = SPPhotoAlbum.read(MainActivity.this);
         // Add a new record to the album, and save it back to Shared Preferences
         PhotoRecord photoRecord = new PhotoRecord(originalPhotoPath, thumbnailPath, dateTime, CustomImageName);
         listPhoto.add(photoRecord);
-        try {
-            SPPhotoAlbum.saveObject(MainActivity.this, SPPhotoAlbum.serialize(listPhoto));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        SPPhotoAlbum.save(MainActivity.this, listPhoto);
     }
 
     private void takePhoto() {
@@ -178,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void viewPhotos() {
-        // TODO: Open photo list activity
+        PhotoListActivity.invokeMe(MainActivity.this);
     }
 
     public void onClickTakePhoto(View view) {

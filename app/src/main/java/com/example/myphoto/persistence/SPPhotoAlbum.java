@@ -8,6 +8,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SPPhotoAlbum {
@@ -15,18 +16,39 @@ public class SPPhotoAlbum {
     private static String SP_FILE_PHOTO_ALBUM = "SP_FILE_PHOTO_ALBUM";
     private static String SP_KEY_PHOTO = "SP_KEY_PHOTO";
 
+    public static void save(Context context, List<PhotoRecord> listPhoto) {
+        try {
+            SPPhotoAlbum.saveObject(context, serialize(listPhoto));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static List<PhotoRecord> read(Context context) {
+        List<PhotoRecord> listPhoto = new ArrayList<>();
+        try {
+            String serializedObj = SPPhotoAlbum.readObject(context);
+            if (serializedObj != null) {
+                listPhoto = (List<PhotoRecord>) deSerialization(serializedObj);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listPhoto;
+    }
+
     /**
-     * Serialize photo list object
+     * Serialize object
      *
-     * @param listPhoto
+     * @param object
      * @return
      * @throws IOException
      */
-    public static String serialize(List<PhotoRecord> listPhoto) throws IOException {
+    private static String serialize(Object object) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(
                 byteArrayOutputStream);
-        objectOutputStream.writeObject(listPhoto);
+        objectOutputStream.writeObject(object);
         String serStr = byteArrayOutputStream.toString("ISO-8859-1");
         serStr = java.net.URLEncoder.encode(serStr, "UTF-8");
         objectOutputStream.close();
@@ -43,7 +65,7 @@ public class SPPhotoAlbum {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public static Object deSerialization(String str) throws IOException,
+    private static Object deSerialization(String str) throws IOException,
             ClassNotFoundException {
         String redStr = java.net.URLDecoder.decode(str, "UTF-8");
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
@@ -57,16 +79,15 @@ public class SPPhotoAlbum {
         return object;
     }
 
-    public static void saveObject(Context context, String strObject) {
+    private static void saveObject(Context context, String strObject) {
         SharedPreferences sp = context.getSharedPreferences(SP_FILE_PHOTO_ALBUM, Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = sp.edit();
         edit.putString(SP_KEY_PHOTO, strObject);
         edit.apply();
     }
 
-    public static String readObject(Context context) {
+    private static String readObject(Context context) {
         SharedPreferences sp = context.getSharedPreferences(SP_FILE_PHOTO_ALBUM, Context.MODE_PRIVATE);
         return sp.getString(SP_KEY_PHOTO, null);
     }
-
 }
