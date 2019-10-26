@@ -23,6 +23,18 @@ content file provider, instead of using Uri.fromFile() that working on earlier A
         imageUri = Uri.fromFile(outputImage);
     }
 ```
+We need to add a declaration for the FileProvider in the AndroidManifest.xml.
+```Xml
+    <provider
+        android:name="android.support.v4.content.FileProvider"
+        android:authorities="com.example.myphoto.fileprovider"
+        android:exported="false"
+        android:grantUriPermissions="true">
+        <meta-data
+            android:name="android.support.FILE_PROVIDER_PATHS"
+            android:resource="@xml/file_paths" />
+    </provider>
+```        
 To simplify the operations, we take a public SD cache directory to save photos, which can be obtained by getExternalCacheDir(). In this case we have no need to request runtime SD access permissions.
 
 ### Make user able to specify an image name for the photo he/she has just taken
