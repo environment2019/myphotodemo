@@ -132,7 +132,7 @@ SPPhotoAlbum provides static methods to save List<PhotoRecord> object to Shared 
   
 ## Things to be improved
 ### Local database
-A local database may need to be implemented as the persistence storage solution of the album, considering the large amount 
+A local database may need to be implemented as the persistent storage solution of the album, considering the large amount 
 of photos.
 ### Image cache
 Image cache solution need to be introduced to improve the user experience while browsing the photo list.
