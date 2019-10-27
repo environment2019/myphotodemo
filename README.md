@@ -131,10 +131,12 @@ PhotoRecord + SPPhotoAlbum<br>
 SPPhotoAlbum provides static methods to save List<PhotoRecord> object to Shared Preferences and read it out.
   
 ## Things to be improved
-### Use local database
+### Local database
 A local database may need to be implemented as the persistence storage solution of the album, considering the large amount 
 of photos.
 ### Image cache
 Image cache solution need to be introduced to improve the user experience while browsing the photo list.
+### Photo management
+Some photo management features should be implemented for the album such as photo scanning, deleting and renaming.
 
 
